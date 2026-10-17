@@ -1,0 +1,52 @@
+# Render blueprint for the Hospitality Academy backend.
+# Vercel cannot host the Socket.IO/WebRTC backend, so deploy it here (or on
+# Railway/Fly.io/Koyeb) and point the Vercel frontend at it.
+#
+# 1. Push this repo to GitHub.
+# 2. Render Dashboard -> New -> Blueprint -> select the repo.
+# 3. Fill in the `sync: false` env vars (DB credentials, secrets, frontend URL).
+#
+# The database must be a managed MySQL/MariaDB instance (Render, Railway, Aiven,
+# PlanetScale, Clever Cloud, ...). Set DATABASE_SSL=true for providers that
+# require TLS.
+
+services:
+  - type: web
+    name: hospitality-academy-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false          # e.g. https://your-app.vercel.app
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        value: "3306"
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: DATABASE_NAME
+        value: hospitality_academy
+      - key: DATABASE_SSL
+        value: "false"
+      - key: MAX_UPLOAD_MB
+        value: "10"
+
+    # Persistent disk for uploaded images. Disks need a paid instance
+    # (Starter+), so it is commented out to keep the blueprint valid on the
+    # free plan. Uncomment after upgrading, or use object storage instead.
+    # disk:
+    #   name: uploads
+    #   mountPath: /opt/render/project/src/backend/src/uploads
+    #   sizeGB: 1
