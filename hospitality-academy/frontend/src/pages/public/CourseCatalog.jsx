@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import CourseCard from '../../components/CourseCard';
 import { Search, Filter } from 'lucide-react';
 
@@ -35,7 +35,7 @@ export default function CourseCatalog() {
     if (category) params.set('category', category);
     if (level) params.set('level', level);
     if (search) params.set('search', search);
-    api.get(`/courses?${params}`).then(r => setCourses(r.data.courses)).finally(() => setLoading(false));
+    api.get(`/courses?${params}`).then(r => setCourses(asArray(r.data?.courses))).catch(() => {}).finally(() => setLoading(false));
   }, [category, level, search]);
 
   const updateParam = (key, val) => {

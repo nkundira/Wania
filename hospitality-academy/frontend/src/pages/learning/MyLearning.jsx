@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { BookOpen, Award, PlayCircle, CheckCircle2 } from 'lucide-react';
 
 export default function MyLearning() {
@@ -14,8 +14,8 @@ export default function MyLearning() {
       api.get('/my-learning'),
       api.get('/quiz-results')
     ]).then(([a, b]) => {
-      setEnrollments(a.data.enrollments);
-      setQuizResults(b.data.attempts);
+      setEnrollments(asArray(a.data?.enrollments));
+      setQuizResults(asArray(b.data?.attempts));
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 

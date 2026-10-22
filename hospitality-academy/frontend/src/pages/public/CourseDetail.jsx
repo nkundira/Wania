@@ -24,7 +24,7 @@ export default function CourseDetail() {
 
   useEffect(() => {
     setLoading(true);
-    api.get(`/courses/${slug}`).then(r => setCourse(r.data.course)).catch(() => setCourse(null)).finally(() => setLoading(false));
+    api.get(`/courses/${slug}`).then(r => setCourse(r.data?.course || null)).catch(() => setCourse(null)).finally(() => setLoading(false));
   }, [slug]);
 
   useEffect(() => {

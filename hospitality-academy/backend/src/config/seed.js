@@ -6,7 +6,7 @@ async function seedUsers() {
   console.log('Seeding users...');
   const hash = await bcrypt.hash('password123', 12);
   const demoUsers = [
-    { username: 'sarah_barista', email: 'sarah@example.com', name: 'Sarah Mitchell', bio: 'Certified barista trainer with 8 years of specialty coffee experience.', interests: 'Coffee, Latte Art, Sensory Evaluation' },
+    { username: 'Halilou_barista', email: 'hylou.noir12@gmail.com', name: 'Nkundirumurore Halilou', bio: 'Certified barista trainer with 8 years of specialty coffee experience.', interests: 'Coffee, Latte Art, Sensory Evaluation' },
     { username: 'james_hotel', email: 'james@example.com', name: 'James Okoro', bio: 'Front office manager passionate about guest experience.', interests: 'Hotel Management, Customer Service' },
     { username: 'maria_fbe', email: 'maria@example.com', name: 'Maria Santos', bio: 'Restaurant service specialist and F&B instructor.', interests: 'Fine Dining, Wine Service, Menu Design' },
     { username: 'alex_bartender', email: 'alex@example.com', name: 'Alex Chen', bio: 'Mocktail mixologist and juice bar consultant.', interests: 'Mocktails, Fresh Juices, Beverage Design' },
@@ -30,7 +30,7 @@ async function seedCommunity(userIds) {
   console.log('Seeding community content...');
   const users = Object.values(userIds);
   const samplePosts = [
-    { user: 'sarah_barista', content: 'Just pulled the most beautiful ristretto of my life! The crema was like golden velvet. Nothing beats freshly ground single-origin Ethiopian. ☕', sample: 1 },
+    { user: 'Halilou_barista', content: 'Just pulled the most beautiful ristretto of my life! The crema was like golden velvet. Nothing beats freshly ground single-origin Ethiopian. ☕', sample: 1 },
     { user: 'james_hotel', content: 'Hotel tip: The first 30 seconds of check-in set the tone for the entire stay. Always greet with a genuine smile and use the guest\'s name.', sample: 1 },
     { user: 'maria_fbe', content: 'Pro tip for servers: Always present the dish to the guest before placing it. Say the name. It elevates the experience from casual to memorable.', sample: 1 },
     { user: 'alex_bartender', content: 'New mocktail recipe I\'m working on: Cucumber Elderflower Cooler. Muddled cucumber + elderflower syrup + lime + soda. Refreshing and beautiful! 🥒', sample: 1 },
@@ -54,7 +54,7 @@ async function main() {
   }
   const userIds = await seedUsers();
   await seedCommunity(userIds);
-  console.log('Seed complete! Demo login: sarah@example.com / password123');
+  console.log('Seed complete! Demo login:hylou.noir@gmail.com / password123');
 }
 
 main().catch(err => { console.error('Seed failed:', err); process.exit(1); });

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { Phone, PhoneMissed, Video } from 'lucide-react';
 
 export default function CallHistory() {
@@ -10,7 +10,7 @@ export default function CallHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/messages/calls/history').then(r => setCalls(r.data.calls)).finally(() => setLoading(false));
+    api.get('/messages/calls/history').then(r => setCalls(asArray(r.data?.calls))).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const fmtDuration = (s) => {

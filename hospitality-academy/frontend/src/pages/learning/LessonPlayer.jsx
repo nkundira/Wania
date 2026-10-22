@@ -146,8 +146,8 @@ export default function LessonPlayer() {
     setCompleted(false);
     setActiveTab('lesson');
     api.get(`/lessons/${lessonId}`).then(r => {
-      setLesson(r.data.lesson);
-      setCompleted(!!r.data.lesson.progress?.completed);
+      setLesson(r.data?.lesson || null);
+      setCompleted(!!r.data?.lesson?.progress?.completed);
     }).catch(e => {
       if (e.response?.status === 401) {
         navigate('/login', { state: { from: `/lessons/${lessonId}` } });

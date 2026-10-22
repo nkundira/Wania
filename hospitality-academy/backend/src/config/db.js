@@ -37,7 +37,9 @@ export async function execute(sql, params = []) {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(sql, params);
-    return { affectedRows: result.affectedRows, insertId: result.insertId };
+    // mariadb returns OK-packet insertId as a BigInt even with bigIntAsNumber
+    // enabled, which breaks JSON.stringify and jwt.sign. IDs are INT columns.
+    return { affectedRows: Number(result.affectedRows), insertId: Number(result.insertId) };
   } finally {
     if (conn) conn.release();
   }

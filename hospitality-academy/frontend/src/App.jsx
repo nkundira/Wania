@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/Navbar';
@@ -51,32 +52,34 @@ function AppLayout({ children }) {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/courses" element={<PublicLayout><CourseCatalog /></PublicLayout>} />
-            <Route path="/courses/:slug" element={<PublicLayout><CourseDetail /></PublicLayout>} />
-            <Route path="/lessons/:lessonId" element={<LessonPlayer />} />
-            <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
-            <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
-            <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
-            <Route path="/community" element={<ProtectedRoute><AppLayout><Community /></AppLayout></ProtectedRoute>} />
-            <Route path="/messages" element={<ProtectedRoute><AppLayout><Messages /></AppLayout></ProtectedRoute>} />
-            <Route path="/messages/:conversationId" element={<ProtectedRoute><AppLayout><Messages /></AppLayout></ProtectedRoute>} />
-            <Route path="/profile/:username" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
-            <Route path="/profile/edit" element={<ProtectedRoute><AppLayout><EditProfile /></AppLayout></ProtectedRoute>} />
-            <Route path="/my-learning" element={<ProtectedRoute><AppLayout><MyLearning /></AppLayout></ProtectedRoute>} />
-            <Route path="/notifications" element={<ProtectedRoute><AppLayout><Notifications /></AppLayout></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
-            <Route path="/calls/history" element={<ProtectedRoute><AppLayout><CallHistory /></AppLayout></ProtectedRoute>} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </SocketProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <SocketProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+              <Route path="/courses" element={<PublicLayout><CourseCatalog /></PublicLayout>} />
+              <Route path="/courses/:slug" element={<PublicLayout><CourseDetail /></PublicLayout>} />
+              <Route path="/lessons/:lessonId" element={<LessonPlayer />} />
+              <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
+              <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+              <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+              <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+              <Route path="/community" element={<ProtectedRoute><AppLayout><Community /></AppLayout></ProtectedRoute>} />
+              <Route path="/messages" element={<ProtectedRoute><AppLayout><Messages /></AppLayout></ProtectedRoute>} />
+              <Route path="/messages/:conversationId" element={<ProtectedRoute><AppLayout><Messages /></AppLayout></ProtectedRoute>} />
+              <Route path="/profile/:username" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
+              <Route path="/profile/edit" element={<ProtectedRoute><AppLayout><EditProfile /></AppLayout></ProtectedRoute>} />
+              <Route path="/my-learning" element={<ProtectedRoute><AppLayout><MyLearning /></AppLayout></ProtectedRoute>} />
+              <Route path="/notifications" element={<ProtectedRoute><AppLayout><Notifications /></AppLayout></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
+              <Route path="/calls/history" element={<ProtectedRoute><AppLayout><CallHistory /></AppLayout></ProtectedRoute>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </SocketProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

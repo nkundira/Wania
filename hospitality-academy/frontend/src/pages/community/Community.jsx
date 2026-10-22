@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { Heart, MessageCircle, Send, MoreHorizontal, Trash2, Search, Users, ImagePlus, AlertTriangle } from 'lucide-react';
 
 function PostCard({ post, onDelete }) {
@@ -154,7 +154,7 @@ function PostCard({ post, onDelete }) {
 function StoriesRow() {
   const [updates, setUpdates] = useState([]);
   useEffect(() => {
-    api.get('/community/posts?limit=6').then(r => setUpdates(r.data.posts)).catch(() => {});
+    api.get('/community/posts?limit=6').then(r => setUpdates(asArray(r.data?.posts))).catch(() => {});
   }, []);
   return (
     <div className="bg-white rounded-2xl border border-coffee-100 p-4 mb-4 shadow-sm">
@@ -185,7 +185,7 @@ function StoriesRow() {
 
 function SuggestedUsers({ refresh }) {
   const [users, setUsers] = useState([]);
-  useEffect(() => { api.get('/community/users/suggested').then(r => setUsers(r.data.users)).catch(() => {}); }, [refresh]);
+  useEffect(() => { api.get('/community/users/suggested').then(r => setUsers(asArray(r.data?.users))).catch(() => {}); }, [refresh]);
   if (!users.length) return null;
   return (
     <div className="bg-white rounded-2xl border border-coffee-100 p-4 shadow-sm">
@@ -221,14 +221,14 @@ export default function Community() {
   const [refreshSuggested] = useState(0);
 
   const loadPosts = useCallback(() => {
-    api.get('/community/posts?limit=30').then(r => setPosts(r.data.posts)).finally(() => setLoading(false));
+    api.get('/community/posts?limit=30').then(r => setPosts(asArray(r.data?.posts))).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
 
   useEffect(() => {
     if (search.length >= 2) {
-      api.get(`/community/users/search?q=${encodeURIComponent(search)}`).then(r => setSearchResults(r.data.users)).catch(() => {});
+      api.get(`/community/users/search?q=${encodeURIComponent(search)}`).then(r => setSearchResults(asArray(r.data?.users))).catch(() => {});
     } else setSearchResults([]);
   }, [search]);
 

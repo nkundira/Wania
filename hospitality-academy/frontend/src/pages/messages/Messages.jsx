@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { Send, Phone, Video, Search, ArrowLeft, MessageCircle, X, Mic, MicOff, VideoOff, PhoneOff, Maximize2 } from 'lucide-react';
 
 /* ============ CALL OVERLAY ============ */
@@ -377,7 +377,7 @@ function ChatWindow({ conversation, onBack, onCall }) {
   useEffect(() => {
     setLoading(true);
     joinRoom(convId);
-    api.get(`/messages/conversations/${convId}/messages`).then(r => setMessages(r.data.messages)).finally(() => setLoading(false));
+    api.get(`/messages/conversations/${convId}/messages`).then(r => setMessages(asArray(r.data?.messages))).catch(() => {}).finally(() => setLoading(false));
 
     const offMsg = on('chat:message', (msg) => {
       if (msg.conversation_id === convId) {
@@ -505,7 +505,7 @@ export default function Messages() {
   const [, setCallType] = useState(null);
 
   const loadConversations = useCallback(() => {
-    api.get('/messages/conversations').then(r => setConversations(r.data.conversations)).catch(() => {});
+    api.get('/messages/conversations').then(r => setConversations(asArray(r.data?.conversations))).catch(() => {});
   }, []);
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
@@ -527,7 +527,7 @@ export default function Messages() {
   // Search users for new chat
   useEffect(() => {
     if (userSearch.length >= 2) {
-      api.get(`/community/users/search?q=${encodeURIComponent(userSearch)}`).then(r => setUsers(r.data.users)).catch(() => {});
+      api.get(`/community/users/search?q=${encodeURIComponent(userSearch)}`).then(r => setUsers(asArray(r.data?.users))).catch(() => {});
     } else setUsers([]);
   }, [userSearch]);
 

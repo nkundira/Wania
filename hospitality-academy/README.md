@@ -221,6 +221,17 @@ The app splits cleanly into a static frontend and a stateful backend.
   - optional `VITE_TURN_URL` / `VITE_TURN_USER` / `VITE_TURN_PASS`
 - In local dev leave both unset so the Vite proxy (`/api`, `/socket.io`) is used.
 
+> **`VITE_API_URL` is required in production.** The SPA rewrite in `vercel.json`
+> sends every unmatched path — including `/api/*` — to `index.html`. If
+> `VITE_API_URL` is unset, the browser therefore requests the *frontend* host
+> for API data and gets HTML back instead of JSON, so no data ever loads.
+> `VITE_SOCKET_URL` may be omitted: it is derived from `VITE_API_URL`.
+>
+> A misconfigured `VITE_API_URL` no longer produces a blank page — the API layer
+> rejects non-JSON responses and every list falls back to its empty state — but
+> the app will still be empty. The browser console shows
+> `... returned HTML instead of JSON. Check that VITE_API_URL points at the backend.`
+
 ### 2. Backend → Render / Railway / Fly.io / Koyeb
 
 - `render.yaml` at the repo root is a ready-to-use **Render Blueprint**

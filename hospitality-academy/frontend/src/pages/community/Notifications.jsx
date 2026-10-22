@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { Bell, Heart, MessageCircle, UserPlus, Phone, Award, CheckCheck } from 'lucide-react';
 
 const iconMap = { like: Heart, comment: MessageCircle, follow: UserPlus, call: Phone, quiz: Award, message: MessageCircle, system: Bell };
@@ -12,9 +12,9 @@ export default function Notifications() {
 
   useEffect(() => {
     api.get('/community/notifications').then(r => {
-      setNotifications(r.data.notifications);
-      setUnread(r.data.unreadCount);
-    }).finally(() => setLoading(false));
+      setNotifications(asArray(r.data?.notifications));
+      setUnread(r.data?.unreadCount || 0);
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const markAllRead = async () => {

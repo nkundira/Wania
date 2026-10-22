@@ -26,7 +26,11 @@ export function SocketProvider({ children }) {
       setOnlineUserIds([]);
       return;
     }
-    const s = io(import.meta.env.VITE_SOCKET_URL || '/', {
+    // Fall back to the API host when VITE_SOCKET_URL is unset, so a single
+    // VITE_API_URL is enough to point both REST and realtime at the backend.
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || apiUrl.replace(/\/api\/?$/, '') || '/';
+    const s = io(socketUrl, {
       withCredentials: true,
       transports: ['websocket', 'polling']
     });

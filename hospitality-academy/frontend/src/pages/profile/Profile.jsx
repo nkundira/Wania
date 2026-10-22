@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import { Heart, MessageCircle, Calendar, Award, UserPlus, UserCheck, MessageSquare, Camera, Edit3 } from 'lucide-react';
 
 export default function Profile() {
@@ -19,12 +19,12 @@ export default function Profile() {
     if (!targetUsername) return;
     setLoading(true);
     setPosts([]);
-    api.get(`/community/users/${targetUsername}/profile`).then(r => setProfile(r.data.profile)).catch(() => setProfile(null)).finally(() => setLoading(false));
+    api.get(`/community/users/${targetUsername}/profile`).then(r => setProfile(r.data?.profile || null)).catch(() => setProfile(null)).finally(() => setLoading(false));
   }, [targetUsername]);
 
   useEffect(() => {
     if (!profile?.id) return;
-    api.get(`/community/posts?userId=${profile.id}&limit=50`).then(r => setPosts(r.data.posts)).catch(() => {});
+    api.get(`/community/posts?userId=${profile.id}&limit=50`).then(r => setPosts(asArray(r.data?.posts))).catch(() => {});
   }, [profile?.id]);
 
   const toggleFollow = async () => {

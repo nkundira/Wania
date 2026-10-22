@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import api, { asArray } from '../../services/api';
 import CourseCard from '../../components/CourseCard';
 import { ArrowRight, Star, Users, BookOpen, Award, Coffee, Hotel, Utensils, Wine, Sparkles, Calendar, CheckCircle, PlayCircle, MessageSquare, Video, GraduationCap, ChevronRight } from 'lucide-react';
 
@@ -9,7 +9,7 @@ const categoryNames = { barista: 'Barista & Coffee', hotel: 'Hotel Management', 
 
 export default function Home() {
   const [courses, setCourses] = useState([]);
-  useEffect(() => { api.get('/courses?limit=6').then(r => setCourses(r.data.courses)).catch(() => {}); }, []);
+  useEffect(() => { api.get('/courses?limit=6').then(r => setCourses(asArray(r.data?.courses))).catch(() => {}); }, []);
 
   const testimonials = [
     { name: 'Amara Johnson', role: 'Barista, Blue Bottle Cafe', text: 'The barista course gave me the confidence to work in specialty coffee. The extraction modules were incredibly detailed.', sample: true },
