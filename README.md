@@ -113,3 +113,19 @@ VITE_SOCKET_URL=https://api.example.com
 - Browser smoke coverage for all routes, post upload/publishing, search, AI fallback, settings persistence, mobile layout, real-time direct messaging, and fake-media WebRTC audio/video calls
 
 WebRTC was verified in Chromium with fake audio/video devices. Real camera/microphone behavior and TURN relay still require testing on deployed hardware for strict NAT environments.
+
+## Deploy on Render
+
+`render.yaml` defines a single Render web service plus PostgreSQL. The built React app is served directly by Express in production.
+
+1. Push this repository to the `wania-app` branch.
+2. In Render, choose **New → Blueprint** and connect the repository and `wania-app` branch.
+3. Apply the blueprint. Render installs dependencies, builds the API and client, runs migrations, and starts the service.
+4. Add optional credentials for `AI_API_KEY`, `RESEND_API_KEY`, Cloudinary, or TURN in the Render dashboard.
+5. Open the generated `onrender.com` URL. CORS accepts Render’s `RENDER_EXTERNAL_URL` automatically.
+
+Notes:
+
+- On Render’s free plan, local uploads and the free PostgreSQL instance are not permanent production storage. Configure Cloudinary and a paid database for durable production use.
+- Media URLs are same-origin when `PUBLIC_API_URL` is empty.
+- The service health check is `/api/health`.
