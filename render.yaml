@@ -1,0 +1,62 @@
+services:
+  - type: web
+    name: wania
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install --include=dev && npm install --prefix server --include=dev && npm install --prefix client --include=dev && npm run build
+    startCommand: npm run db:migrate && npm run start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wania-db
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: MEDIA_SIGNING_SECRET
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: CLIENT_URL
+        value: http://localhost:5173
+      - key: PUBLIC_API_URL
+        value: ""
+      - key: MEDIA_PROVIDER
+        value: local
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: MAX_UPLOAD_MB
+        value: "50"
+      - key: STUN_URLS
+        value: stun:stun.l.google.com:19302,stun:global.stun.twilio.com:3478
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_BASE_URL
+        value: https://api.openai.com/v1
+      - key: AI_MODEL
+        value: gpt-4o-mini
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: WANIA <hello@wania.app>
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: TURN_URL
+        sync: false
+      - key: TURN_USERNAME
+        sync: false
+      - key: TURN_CREDENTIAL
+        sync: false
+databases:
+  - name: wania-db
+    databaseName: wania
+    user: wania
+    plan: free

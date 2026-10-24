@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -20,6 +23,7 @@ export function createApp() {
   app.disable('x-powered-by');
 
   const allowedOrigins = env.CLIENT_URL.split(',').map((s) => s.trim()).filter(Boolean);
+  if (process.env.RENDER_EXTERNAL_URL) allowedOrigins.push(process.env.RENDER_EXTERNAL_URL.replace(/\/$/, ''));
 
   app.use(
     helmet({
@@ -86,6 +90,20 @@ export function createApp() {
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: { message: 'Endpoint not found', code: 'NOT_FOUND' } });
   });
+
+  if (isProd) {
+    const serverRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+    const clientDist = path.resolve(env.CLIENT_DIST || path.join(serverRoot, '../client/dist'));
+    const indexFile = path.join(clientDist, 'index.html');
+    if (fs.existsSync(indexFile)) {
+      app.use(express.static(clientDist, { index: false, maxAge: '1h' }));
+      app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) return next();
+        res.setHeader('Cache-Control', 'no-cache');
+        res.sendFile(indexFile);
+      });
+    }
+  }
 
   app.use(errorHandler);
   return app;

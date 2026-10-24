@@ -17,6 +17,7 @@ const schema = z.object({
     .transform((v) => v === 'true'),
   MEDIA_PROVIDER: z.enum(['local', 'cloudinary']).default('local'),
   UPLOAD_DIR: z.string().default('uploads'),
+  CLIENT_DIST: z.string().optional().default(''),
   MAX_UPLOAD_MB: z.coerce.number().default(50),
   MEDIA_URL_TTL_SECONDS: z.coerce.number().default(86400),
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
