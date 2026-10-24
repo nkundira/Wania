@@ -24,7 +24,7 @@ export function extractHashtags(text: string): string[] {
 
 export function extractMentions(text: string): string[] {
   const tags = new Set<string>();
-  for (const match of text.matchAll(/@([A-Za-z0-9_]{3,24})/g)) {
+  for (const match of text.matchAll(/@([A-Za-z0-9._]{3,24})/g)) {
     tags.add(match[1].toLowerCase());
   }
   return [...tags];

@@ -34,7 +34,7 @@ const username = z
   .string()
   .min(3)
   .max(24)
-  .regex(/^[A-Za-z0-9_]+$/, 'Use only letters, numbers, and underscores');
+  .regex(/^[A-Za-z0-9._]+$/, 'Use only letters, numbers, dots, and underscores');
 
 authRouter.post(
   '/register',
