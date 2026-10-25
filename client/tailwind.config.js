@@ -57,12 +57,17 @@ export default {
         shimmer: {
           '100%': { transform: 'translateX(100%)' },
         },
+        kenburns: {
+          '0%': { transform: 'scale(1) translate3d(0, 0, 0)' },
+          '100%': { transform: 'scale(1.14) translate3d(-2%, -2%, 0)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.25s ease-out',
         'slide-up': 'slide-up 0.3s ease-out',
         'slide-in': 'slide-in 0.25s ease-out',
         'pop-in': 'pop-in 0.2s ease-out',
+        'kenburns': 'kenburns 7s ease-out forwards',
       },
     },
   },

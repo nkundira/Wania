@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="City lights at night">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060718"/>
+      <stop offset="45%" stop-color="#171041"/>
+      <stop offset="72%" stop-color="#3a1a63"/>
+      <stop offset="100%" stop-color="#0a0714"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="38%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#d9d2ff"/>
+      <stop offset="100%" stop-color="#9d8cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1838"/>
+      <stop offset="100%" stop-color="#0b0818"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff79c6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff79c6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#night)"/>
+  <circle cx="230" cy="230" r="150" fill="url(#moon)"/>
+  <circle cx="230" cy="230" r="54" fill="#f4f0ff"/>
+  <g fill="#ffffff" opacity="0.75">
+    <circle cx="90" cy="120" r="2.4"/><circle cx="160" cy="80" r="1.8"/>
+    <circle cx="330" cy="110" r="2"/><circle cx="420" cy="70" r="1.6"/>
+    <circle cx="520" cy="140" r="2.2"/><circle cx="640" cy="90" r="1.7"/>
+    <circle cx="720" cy="180" r="2.4"/><circle cx="600" cy="250" r="1.5"/>
+    <circle cx="380" cy="200" r="1.8"/><circle cx="700" cy="330" r="1.6"/>
+  </g>
+  <g fill="url(#tower)">
+    <rect x="0" y="600" width="120" height="400"/>
+    <rect x="90" y="520" width="90" height="480"/>
+    <rect x="165" y="640" width="70" height="360"/>
+    <rect x="225" y="460" width="110" height="540"/>
+    <rect x="320" y="580" width="80" height="420"/>
+    <rect x="385" y="380" width="120" height="620"/>
+    <rect x="495" y="540" width="75" height="460"/>
+    <rect x="555" y="460" width="105" height="540"/>
+    <rect x="645" y="600" width="80" height="400"/>
+    <rect x="710" y="500" width="90" height="500"/>
+  </g>
+  <g fill="#ffd479" opacity="0.9">
+    <rect x="245" y="500" width="12" height="16"/><rect x="270" y="500" width="12" height="16"/>
+    <rect x="245" y="540" width="12" height="16"/><rect x="296" y="540" width="12" height="16"/>
+    <rect x="405" y="430" width="14" height="18"/><rect x="435" y="430" width="14" height="18"/>
+    <rect x="465" y="430" width="14" height="18"/><rect x="405" y="480" width="14" height="18"/>
+    <rect x="465" y="480" width="14" height="18"/><rect x="435" y="530" width="14" height="18"/>
+    <rect x="575" y="510" width="12" height="16"/><rect x="605" y="510" width="12" height="16"/>
+    <rect x="575" y="555" width="12" height="16"/><rect x="635" y="555" width="12" height="16"/>
+  </g>
+  <g fill="#7be0ff" opacity="0.75">
+    <rect x="110" y="570" width="10" height="14"/><rect x="140" y="570" width="10" height="14"/>
+    <rect x="340" y="620" width="10" height="14"/><rect x="340" y="660" width="10" height="14"/>
+    <rect x="510" y="590" width="10" height="14"/><rect x="735" y="550" width="10" height="14"/>
+  </g>
+  <rect x="0" y="720" width="800" height="280" fill="#05040c" opacity="0.72"/>
+  <g opacity="0.35">
+    <rect x="245" y="720" width="12" height="120" fill="#ffd479"/>
+    <rect x="405" y="720" width="14" height="150" fill="#ffd479"/>
+    <rect x="575" y="720" width="12" height="100" fill="#ffd479"/>
+    <rect x="110" y="720" width="10" height="90" fill="#7be0ff"/>
+  </g>
+  <rect x="0" y="690" width="800" height="120" fill="url(#glow)" opacity="0.35"/>
+</svg>

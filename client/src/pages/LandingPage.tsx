@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -54,7 +55,39 @@ const FEATURES = [
   },
 ];
 
+const MOMENTS = [
+  {
+    image: '/landing/moment-sunset.svg',
+    name: 'Mia Chen',
+    handle: '@miachen',
+    caption: 'Golden hour, golden people.',
+    time: '2m',
+  },
+  {
+    image: '/landing/moment-city.svg',
+    name: 'Noah James',
+    handle: '@noahj',
+    caption: 'The city finally slowed down.',
+    time: '18m',
+  },
+  {
+    image: '/landing/moment-friends.svg',
+    name: 'Ava Patel',
+    handle: '@avap',
+    caption: 'Reunited. Same laughter, new stories.',
+    time: '1h',
+  },
+];
+
 export function LandingPage() {
+  const [activeMoment, setActiveMoment] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setInterval(() => setActiveMoment((current) => (current + 1) % MOMENTS.length), 4500);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="relative min-h-[100dvh] overflow-hidden bg-ink-950">
       <div className="pointer-events-none absolute -left-40 top-[-10%] h-[520px] w-[520px] rounded-full bg-grape-700/20 blur-[130px]" />
@@ -137,13 +170,23 @@ export function LandingPage() {
                   ))}
                 </div>
                 <div className="mx-3 overflow-hidden rounded-2xl border border-white/[0.06] bg-ink-900">
-                  <div className="relative aspect-[4/3] bg-gradient-to-br from-grape-600 via-fuchsia-600 to-amber-400">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_45%)]" />
+                  <div className="relative aspect-[4/3] overflow-hidden bg-ink-900">
+                    {MOMENTS.map((moment, index) => (
+                      <img
+                        key={moment.image}
+                        src={moment.image}
+                        alt={moment.caption}
+                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                          index === activeMoment ? 'animate-kenburns opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
                     <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                      <Avatar user={{ displayName: 'Mia Chen' }} size={28} ring />
+                      <Avatar user={{ displayName: MOMENTS[activeMoment].name }} size={28} ring />
                       <div>
-                        <p className="text-[11px] font-semibold text-white">Mia Chen</p>
-                        <p className="text-[9px] text-white/70">Golden hour, golden people.</p>
+                        <p className="text-[11px] font-semibold text-white">{MOMENTS[activeMoment].name}</p>
+                        <p className="text-[9px] text-white/70">{MOMENTS[activeMoment].caption}</p>
                       </div>
                     </div>
                     <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur">
@@ -154,12 +197,20 @@ export function LandingPage() {
                     <Heart className="h-4 w-4 fill-rose-400 text-rose-400" />
                     <MessageCircle className="h-4 w-4" />
                     <Users className="h-4 w-4" />
-                    <span className="ml-auto text-[9px] text-zinc-600">2m</span>
+                    <span className="ml-auto text-[9px] text-zinc-600">{MOMENTS[activeMoment].time}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between px-5 py-3 text-zinc-600">
-                  {[0, 1, 2, 3, 4].map((item) => (
-                    <span key={item} className={`h-2 w-2 rounded-full ${item === 0 ? 'bg-grape-400' : 'bg-white/15'}`} />
+                  {MOMENTS.map((moment, index) => (
+                    <button
+                      key={moment.handle}
+                      type="button"
+                      aria-label={`Show ${moment.name}'s moment`}
+                      onClick={() => setActiveMoment(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === activeMoment ? 'w-5 bg-grape-400' : 'w-2 bg-white/15 hover:bg-white/30'
+                      }`}
+                    />
                   ))}
                 </div>
               </div>
@@ -187,6 +238,46 @@ export function LandingPage() {
                 “Your profile is looking great. Want help writing a bio?”
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-5 pb-20 pt-2 sm:px-8">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-grape-300">Real moments</p>
+              <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+                A little of everything, shared by your people.
+              </h2>
+            </div>
+            <span className="text-xs text-zinc-500">Photos, reels, stories — all in one place.</span>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {MOMENTS.map((moment, index) => (
+              <figure
+                key={moment.handle}
+                className={`group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-ink-900 shadow-card ${
+                  index === 1 ? 'sm:-translate-y-4' : ''
+                }`}
+              >
+                <img
+                  src={moment.image}
+                  alt={moment.caption}
+                  loading="lazy"
+                  className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
+                  <div>
+                    <p className="text-sm font-semibold text-white">{moment.name}</p>
+                    <p className="text-[11px] text-white/60">{moment.caption}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-medium text-white/60">
+                    <Heart className="h-3.5 w-3.5 fill-rose-400 text-rose-400" />
+                    {moment.handle}
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </section>
 

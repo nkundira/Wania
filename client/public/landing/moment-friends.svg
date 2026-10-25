@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Friends together at dusk">
+  <defs>
+    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#140b2e"/>
+      <stop offset="42%" stop-color="#4a1d5f"/>
+      <stop offset="72%" stop-color="#b84a70"/>
+      <stop offset="100%" stop-color="#ffb26b"/>
+    </linearGradient>
+    <radialGradient id="warm" cx="50%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#ffd9a0" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffd9a0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1030"/>
+      <stop offset="100%" stop-color="#0b0614"/>
+    </linearGradient>
+    <radialGradient id="bokeh" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe3ae" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#ffe3ae" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#dusk)"/>
+  <circle cx="400" cy="640" r="300" fill="url(#warm)"/>
+  <circle cx="400" cy="655" r="96" fill="#ffcf8a" opacity="0.9"/>
+  <g fill="#ffdca8" opacity="0.9">
+    <circle cx="120" cy="250" r="7"/><circle cx="205" cy="180" r="4"/>
+    <circle cx="315" cy="250" r="5"/><circle cx="470" cy="200" r="6"/>
+    <circle cx="590" cy="270" r="4"/><circle cx="690" cy="205" r="7"/>
+    <circle cx="660" cy="360" r="3.5"/><circle cx="155" cy="370" r="3.5"/>
+  </g>
+  <g>
+    <circle cx="175" cy="300" r="40" fill="url(#bokeh)"/>
+    <circle cx="255" cy="360" r="26" fill="url(#bokeh)"/>
+    <circle cx="610" cy="320" r="34" fill="url(#bokeh)"/>
+    <circle cx="690" cy="430" r="22" fill="url(#bokeh)"/>
+    <circle cx="120" cy="470" r="18" fill="url(#bokeh)"/>
+  </g>
+  <path d="M0 780 C180 720 300 780 420 760 C560 736 690 720 800 780 L800 1000 L0 1000 Z" fill="url(#ground)"/>
+  <g fill="#160a20">
+    <g>
+      <circle cx="300" cy="600" r="54"/>
+      <path d="M212 1000 C212 812 248 730 300 730 C352 730 388 812 388 1000 Z"/>
+      <path d="M244 1040 C250 860 274 800 300 800 C326 800 350 860 356 1040 Z" fill="#0e0616" opacity="0.5"/>
+    </g>
+    <g>
+      <circle cx="430" cy="560" r="60"/>
+      <path d="M330 1000 C330 790 372 698 430 698 C488 698 530 790 530 1000 Z"/>
+    </g>
+    <g>
+      <circle cx="570" cy="612" r="50"/>
+      <path d="M490 1000 C490 824 524 748 570 748 C616 748 650 824 650 1000 Z"/>
+    </g>
+  </g>
+  <g stroke="#ffdca8" stroke-width="2" fill="none" opacity="0.35">
+    <path d="M40 150 C180 210 260 120 400 180 C540 240 650 150 770 210"/>
+  </g>
+  <g fill="#ffe3ae">
+    <circle cx="40" cy="150" r="4"/><circle cx="130" cy="182" r="4"/>
+    <circle cx="240" cy="150" r="4"/><circle cx="350" cy="172" r="4"/>
+    <circle cx="470" cy="200" r="4"/><circle cx="580" cy="178" r="4"/>
+    <circle cx="690" cy="190" r="4"/><circle cx="770" cy="210" r="4"/>
+  </g>
+</svg>
