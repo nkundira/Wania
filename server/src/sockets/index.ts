@@ -2,6 +2,7 @@ import type { Server as HttpServer } from 'node:http';
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
+import { isAllowedOrigin } from '../config/origins.js';
 import { query } from '../db/pool.js';
 import { assertConversationMember, getConversationMember, isBlocked } from '../services/access.service.js';
 import { acceptCall, createCall, declineCall, endCall, getCall, markMissed } from '../services/calls.service.js';
@@ -36,7 +37,10 @@ async function notifyPresence(userId: string, online: boolean) {
 export function initSockets(httpServer: HttpServer) {
   const io = new Server(httpServer, {
     cors: {
-      origin: env.CLIENT_URL.split(',').map((s) => s.trim()),
+      origin(origin, cb) {
+        if (!origin || isAllowedOrigin(origin)) return cb(null, true);
+        cb(new Error('Not allowed by CORS'));
+      },
       credentials: true,
     },
     maxHttpBufferSize: 1e6,

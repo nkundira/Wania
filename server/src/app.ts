@@ -7,6 +7,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { env, isProd } from './config/env.js';
+import { isAllowedOrigin } from './config/origins.js';
 import { errorHandler } from './utils/errors.js';
 import { authRouter } from './routes/auth.routes.js';
 import { reportsRouter, usersRouter } from './routes/users.routes.js';
@@ -21,20 +22,6 @@ export function createApp() {
   const app = express();
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
-
-  const allowedOrigins = env.CLIENT_URL.split(',').map((s) => s.trim()).filter(Boolean);
-  if (process.env.RENDER_EXTERNAL_URL) allowedOrigins.push(process.env.RENDER_EXTERNAL_URL.replace(/\/$/, ''));
-
-  function isAllowedOrigin(origin: string) {
-    if (allowedOrigins.includes(origin)) return true;
-    if (!isProd) return true;
-    try {
-      const url = new URL(origin);
-      return url.protocol === 'https:' && url.hostname.endsWith('.onrender.com');
-    } catch {
-      return false;
-    }
-  }
 
   app.use(
     helmet({
