@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type Request } from 'express';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { env } from '../config/env.js';
@@ -29,6 +29,20 @@ import { getProfileById, deactivateAccount, deleteAccount, reactivateAccount } f
 import { onboardingProgress } from '../services/ai.service.js';
 
 export const authRouter = Router();
+
+function publicAppUrl(req: Request) {
+  const local = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/i;
+  const candidates = [
+    env.PUBLIC_APP_URL,
+    process.env.RENDER_EXTERNAL_URL,
+    ...env.CLIENT_URL.split(','),
+  ]
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value))
+    .filter((value) => !local.test(value));
+  const fallback = req.get('origin') || env.CLIENT_URL.split(',')[0] || 'http://localhost:5173';
+  return (candidates[0] || fallback).replace(/\/$/, '');
+}
 
 const username = z
   .string()
@@ -131,7 +145,7 @@ authRouter.post(
     let devToken: string | undefined;
     if (rows[0]) {
       const token = await createAuthToken(rows[0].id, 'password_reset', 60);
-      const link = `${env.CLIENT_URL.replace(/\/$/, '')}/reset-password?token=${encodeURIComponent(token)}`;
+      const link = `${publicAppUrl(req)}/reset-password?token=${encodeURIComponent(token)}`;
       await sendTransactionalEmail(
         req.body.email,
         'Reset your WANIA password',
@@ -177,7 +191,7 @@ authRouter.post(
     const user = authUser(req);
     if (user.email_verified) return res.json({ message: 'Email already verified' });
     const token = await createAuthToken(user.id, 'email_verify', 24 * 60);
-    const link = `${env.CLIENT_URL.replace(/\/$/, '')}/verify-email?token=${encodeURIComponent(token)}`;
+    const link = `${publicAppUrl(req)}/verify-email?token=${encodeURIComponent(token)}`;
     await sendTransactionalEmail(
       user.email,
       'Verify your WANIA email',

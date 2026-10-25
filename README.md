@@ -79,6 +79,7 @@ Important production values:
 
 - `DATABASE_URL` — PostgreSQL connection string, with `sslmode=require` for managed providers
 - `CLIENT_URL` — comma-separated allowed web origins
+- `PUBLIC_APP_URL` — public web origin used in email links (falls back to the Render URL or first non-local `CLIENT_URL`)
 - `PUBLIC_API_URL` — public API origin used in signed media URLs, e.g. `https://api.example.com`
 - `JWT_ACCESS_SECRET`, `MEDIA_SIGNING_SECRET` — long random secrets
 - `COOKIE_SECURE=true` — required behind HTTPS
@@ -88,6 +89,10 @@ Important production values:
 - `RESEND_API_KEY`, `EMAIL_FROM` — enable transactional email
 
 Leave optional credentials empty to run in explicit fallback modes: offline AI guidance, server-logged email links outside production, and local media.
+
+### Password reset email
+
+In development the reset link is logged to the server console and shown in the UI. In production, password reset emails require `RESEND_API_KEY` and an `EMAIL_FROM` address on a domain verified in Resend; otherwise no email is delivered. Set `PUBLIC_APP_URL` to the deployed web origin so reset links point at the right host.
 
 ## Production notes
 

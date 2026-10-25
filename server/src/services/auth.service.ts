@@ -164,19 +164,25 @@ export async function consumeAuthToken(raw: string, type: 'email_verify' | 'pass
 
 export async function sendTransactionalEmail(to: string, subject: string, text: string) {
   if (!env.RESEND_API_KEY) {
-    console.log(`[email:dev] To: ${to} | ${subject}\n${text}`);
+    console.warn(`[email] RESEND_API_KEY is not configured; "${subject}" was not sent to ${to}`);
+    if (!isProd) console.log(`[email:dev] To: ${to} | ${subject}\n${text}`);
     return false;
   }
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: env.EMAIL_FROM, to, subject, text }),
-  });
-  if (!res.ok) {
-    console.error('[email] provider error', res.status, await res.text());
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: env.EMAIL_FROM, to, subject, text }),
+    });
+    if (!res.ok) {
+      console.error('[email] provider error', res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('[email] request failed', (err as Error).message);
     return false;
   }
-  return true;
 }
 
 export function exposeDevToken(token: string) {
