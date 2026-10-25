@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
-import { env, isProd } from './config/env.js';
+import { env, isEmailConfigured, isProd } from './config/env.js';
 import { isAllowedOrigin } from './config/origins.js';
 import { errorHandler } from './utils/errors.js';
 import { authRouter } from './routes/auth.routes.js';
@@ -66,7 +66,7 @@ export function createApp() {
   );
 
   app.get('/api/health', (_req, res) => {
-    res.json({ ok: true, name: 'WANIA', time: new Date().toISOString() });
+    res.json({ ok: true, name: 'WANIA', emailConfigured: isEmailConfigured, time: new Date().toISOString() });
   });
 
   app.use('/api/auth', authRouter);

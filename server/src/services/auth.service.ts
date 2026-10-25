@@ -168,6 +168,11 @@ export async function sendTransactionalEmail(to: string, subject: string, text: 
     if (!isProd) console.log(`[email:dev] To: ${to} | ${subject}\n${text}`);
     return false;
   }
+  if (!env.EMAIL_FROM) {
+    console.warn(`[email] EMAIL_FROM is not configured; "${subject}" was not sent to ${to}`);
+    if (!isProd) console.log(`[email:dev] To: ${to} | ${subject}\n${text}`);
+    return false;
+  }
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -175,7 +180,14 @@ export async function sendTransactionalEmail(to: string, subject: string, text: 
       body: JSON.stringify({ from: env.EMAIL_FROM, to, subject, text }),
     });
     if (!res.ok) {
-      console.error('[email] provider error', res.status, await res.text());
+      const detail = await res.text();
+      const hint =
+        res.status === 401
+          ? 'Check RESEND_API_KEY.'
+          : res.status === 403
+            ? 'Verify EMAIL_FROM domain in Resend, or use WANIA <onboarding@resend.dev> for owner-only tests.'
+            : '';
+      console.error(`[email] provider error ${res.status}${hint ? `: ${hint}` : ''}`, detail);
       return false;
     }
     return true;

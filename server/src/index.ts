@@ -4,6 +4,12 @@ import { createApp } from './app.js';
 import { pool } from './db/pool.js';
 import { initSockets } from './sockets/index.js';
 
+if (!env.RESEND_API_KEY) {
+  console.warn('[email] RESEND_API_KEY is missing; password reset and verification emails will not be sent');
+} else if (!env.EMAIL_FROM) {
+  console.warn('[email] EMAIL_FROM is missing; set it to an address verified in Resend');
+}
+
 const app = createApp();
 const server = http.createServer(app);
 initSockets(server);

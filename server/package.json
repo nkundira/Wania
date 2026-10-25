@@ -8,6 +8,7 @@
     "build": "tsup src/index.ts --format esm --platform node --target node20 --out-dir dist --clean --sourcemap",
     "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
+    "email:test": "tsx scripts/test-email.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

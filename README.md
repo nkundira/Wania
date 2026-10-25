@@ -86,13 +86,28 @@ Important production values:
 - `MEDIA_PROVIDER=local|cloudinary` — persist `server/uploads` if using local storage
 - `STUN_URLS`, `TURN_URL`, `TURN_USERNAME`, `TURN_CREDENTIAL` — TURN is required for reliable calls behind strict NATs
 - `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — enable the real AI assistant
-- `RESEND_API_KEY`, `EMAIL_FROM` — enable transactional email
+- `RESEND_API_KEY`, `EMAIL_FROM` — enable transactional email; `EMAIL_FROM` must use a domain verified in Resend
 
 Leave optional credentials empty to run in explicit fallback modes: offline AI guidance, server-logged email links outside production, and local media.
 
 ### Password reset email
 
-In development the reset link is logged to the server console and shown in the UI. In production, password reset emails require `RESEND_API_KEY` and an `EMAIL_FROM` address on a domain verified in Resend; otherwise no email is delivered. Set `PUBLIC_APP_URL` to the deployed web origin so reset links point at the right host.
+In development the reset link is logged to the server console and shown in the UI. In production, email requires:
+
+1. A Resend account owned by the client.
+2. The client's domain added and verified in Resend (DNS records).
+3. `RESEND_API_KEY` and an `EMAIL_FROM` using that verified domain, e.g. `EMAIL_FROM=WANIA <no-reply@client-domain.com>`.
+4. `PUBLIC_APP_URL` set to the deployed SPA origin, e.g. `https://wania-services.onrender.com`, so reset links open a working page.
+
+For owner-only testing before domain verification, `EMAIL_FROM=WANIA <onboarding@resend.dev>` delivers only to the Resend account owner's email.
+
+Check `GET /api/health` for `emailConfigured`. Test credentials directly with:
+
+```bash
+npm run email:test --prefix server -- you@example.com
+```
+
+If `emailConfigured` is false or the test fails, check the server logs for `[email]` errors.
 
 ## Production notes
 

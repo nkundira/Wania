@@ -33,7 +33,7 @@ const schema = z.object({
   TURN_USERNAME: z.string().optional().default(''),
   TURN_CREDENTIAL: z.string().optional().default(''),
   RESEND_API_KEY: z.string().optional().default(''),
-  EMAIL_FROM: z.string().default('WANIA <hello@wania.app>'),
+  EMAIL_FROM: z.string().optional().default(''),
 });
 
 const parsed = schema.safeParse(process.env);
@@ -46,3 +46,4 @@ if (!parsed.success) {
 export const env = parsed.data;
 export const isProd = env.NODE_ENV === 'production';
 export const isAiConfigured = Boolean(env.AI_API_KEY);
+export const isEmailConfigured = Boolean(env.RESEND_API_KEY && env.EMAIL_FROM);

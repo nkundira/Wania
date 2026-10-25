@@ -28,7 +28,9 @@ export const authApi = {
   logout: () => api.post('/auth/logout'),
   me: () => api.get<{ user: Profile; onboarding: OnboardingProgress }>('/auth/me').then((r) => r.data),
   forgotPassword: (email: string) =>
-    api.post<{ message: string; devToken?: string }>('/auth/forgot-password', { email }).then((r) => r.data),
+    api
+      .post<{ message: string; emailConfigured: boolean; devToken?: string }>('/auth/forgot-password', { email })
+      .then((r) => r.data),
   resetPassword: (token: string, password: string) =>
     api.post<{ message: string }>('/auth/reset-password', { token, password }).then((r) => r.data),
   verifyEmail: (token: string) => api.post('/auth/verify-email', { token }).then((r) => r.data),

@@ -10,6 +10,7 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [emailConfigured, setEmailConfigured] = useState(true);
   const [devToken, setDevToken] = useState<string | null>(null);
   const [error, setError] = useState('');
 
@@ -20,6 +21,7 @@ export function ForgotPasswordPage() {
     try {
       const result = await authApi.forgotPassword(email.trim());
       setSent(true);
+      setEmailConfigured(result.emailConfigured);
       if (result.devToken) setDevToken(result.devToken);
     } catch (err) {
       setError(getErrorMessage(err));
@@ -48,6 +50,11 @@ export function ForgotPasswordPage() {
           <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
             If <span className="font-medium text-zinc-200">{email}</span> is registered, a reset link is on its way. It expires in 60 minutes.
           </p>
+          {!emailConfigured && !devToken && (
+            <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-left text-xs text-amber-200">
+              Email delivery is not configured on this server yet. Please contact support.
+            </div>
+          )}
           {devToken && (
             <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-left text-xs text-amber-200">
               <p className="font-semibold">Development mode</p>

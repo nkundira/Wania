@@ -1,7 +1,7 @@
 import { Router, type Request } from 'express';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { env } from '../config/env.js';
+import { env, isEmailConfigured } from '../config/env.js';
 import { query } from '../db/pool.js';
 import { requireAuth } from '../middleware/auth.js';
 import { forgotLimiter, loginLimiter, registerLimiter } from '../middleware/rateLimit.js';
@@ -155,6 +155,7 @@ authRouter.post(
     }
     res.json({
       message: 'If that email is registered, a reset link has been sent.',
+      emailConfigured: isEmailConfigured,
       ...(devToken ? { devToken } : {}),
     });
   })
