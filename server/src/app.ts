@@ -25,6 +25,17 @@ export function createApp() {
   const allowedOrigins = env.CLIENT_URL.split(',').map((s) => s.trim()).filter(Boolean);
   if (process.env.RENDER_EXTERNAL_URL) allowedOrigins.push(process.env.RENDER_EXTERNAL_URL.replace(/\/$/, ''));
 
+  function isAllowedOrigin(origin: string) {
+    if (allowedOrigins.includes(origin)) return true;
+    if (!isProd) return true;
+    try {
+      const url = new URL(origin);
+      return url.protocol === 'https:' && url.hostname.endsWith('.onrender.com');
+    } catch {
+      return false;
+    }
+  }
+
   app.use(
     helmet({
       crossOriginResourcePolicy: { policy: 'cross-origin' },
@@ -34,7 +45,7 @@ export function createApp() {
   app.use(
     cors({
       origin(origin, cb) {
-        if (!origin || allowedOrigins.includes(origin) || !isProd) return cb(null, true);
+        if (!origin || isAllowedOrigin(origin)) return cb(null, true);
         cb(new Error('Not allowed by CORS'));
       },
       credentials: true,
